@@ -1,0 +1,13 @@
+[package]
+name = "dsc-band-ack"
+version = "0.1.0"
+authors = ["Jannik Lorenz <dev@janniklorenz.de>"]
+
+[dependencies]
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
+argparse = "0.2.1"
+
+[build-dependencies]
+cc = "1.0"
