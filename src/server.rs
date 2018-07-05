@@ -32,13 +32,15 @@ enum Answer {
 /// This method will block.
 ///
 /// server_address      IP and port to listen on
-pub fn run(server_address: &str) {
+pub fn run(server_address: &str, device: String) {
     let listener = TcpListener::bind(server_address).unwrap();
     println!("DSC Band Ack TCP Server ready on {}", server_address);
+
     for stream in listener.incoming() {
-        thread::spawn(|| {
+        let device = device.clone();
+        thread::spawn(move || {
             if let Ok(stream) = stream {
-                client_loop(stream);
+                client_loop(stream, device);
             }
         });
     }
@@ -48,7 +50,7 @@ pub fn run(server_address: &str) {
 
 /// Perform client loop for TCP client. We wait until we recive an action, perform it, and send
 /// results back to the sender
-fn client_loop(mut stream: TcpStream) {
+fn client_loop(mut stream: TcpStream, device: String) {
     let _ = stream.set_nonblocking(true).expect("set_nonblocking call failed");
     let _ = stream.set_read_timeout(Some(Duration::from_millis(200))).expect("set_read_timeout call failed");
     loop {
@@ -65,7 +67,7 @@ fn client_loop(mut stream: TcpStream) {
 
                     // perform get_ticks and send result to sender
                     Ok(Action::GetTicks{address}) => {
-                        match band_ack::get_ticks(address) {
+                        match band_ack::get_ticks(address, device) {
                             Ok(ticks) => Answer::Ticks { address, ticks },
                             Err(err) => Answer::Error { error: format!("{}", err) },
                         }

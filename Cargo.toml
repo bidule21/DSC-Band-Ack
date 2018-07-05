@@ -1,5 +1,5 @@
 [package]
-name = "dsc-band-ack"
+name = "dsc_band_ack"
 version = "0.1.0"
 authors = ["Jannik Lorenz <dev@janniklorenz.de>"]
 

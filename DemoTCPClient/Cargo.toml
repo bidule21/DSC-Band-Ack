@@ -1,5 +1,5 @@
 [package]
-name = "rust_client"
+name = "dsc-band-ack-client"
 version = "0.1.0"
 authors = ["Jannik Lorenz <dev@janniklorenz.de>"]
 
